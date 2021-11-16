@@ -13,12 +13,17 @@ def dictBuilder():
     for name in fileNames:
         file = open(currentDirect + name, "r")
         file = file.readlines()
-        alignments[file[0]] = file[1:]
+        header = file[0]
+        key = ''
+        for line in file[1:]:
+            key = key + line.strip('\n')
+        alignments[header] = key
     return(alignments)
 
 
 def main():
-    dictBuilder()
+    alignments = dictBuilder()
+    print((alignments))
     return 0
 
 main()
