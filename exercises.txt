@@ -1,7 +1,8 @@
 Exercise 1: The red vertical bars denote differences within the regions of the DNA.
  The highlight gray regions represent nucleotides that could not be properly deciphered.
 
-Exercise 2:
+Exercise 2: Yes, the region between 2000 and 2990 because there are many,
+ large differences within the DNA sequences at this location.
 
 Exercise 3: 
 
