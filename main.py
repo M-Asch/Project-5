@@ -23,7 +23,7 @@ def dictBuilder():
 
 def main():
     alignments = dictBuilder()
-    print((alignments))
+    print(alignments)
     return 0
 
 main()
