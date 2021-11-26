@@ -195,3 +195,20 @@ def motifSearchGreedy(sequences, k, iterations):
     if getScore(motifs) < getScore(bestMotifs):
       bestMotifs = motifs
   return bestMotifs
+
+def hamming(s, t):
+  """
+  hamming
+  Purpose:
+      calculate the hamming distance of a current dna pattern
+  Parameters:
+      s: a k-mer of DNA bases with the same length as t
+      t: a k-mer of DNA bases with the same length as s
+  Return Values:
+      distance: the hamming distance between two patterns
+  """
+  distance = 0                #initialize distance to track hamming score
+  for i in range(len(s)):
+      if s[i] != t[i]:            #check to see if have same pair
+          distance += 1
+  return(distance)
