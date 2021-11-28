@@ -27,24 +27,37 @@ def findR(D):
         rs.append(sum(row))
     return rs
 
-def neighborJoining(D, n , names):
-    '''# create a 1-D array of n zeros
-    R = numpy.zeros(n)
-    # get the "flat" index of the minimum value in array M
-    min_flat_index = numpy.argmin(M)
+def distanceMatrix(D, i, j):
+    dij = D[i][j]
+    newR = []
+    for col in range(len(D[0]) - 1):
+        newR.append((D[i][col] + D[j][col] - dij/2))
 
-    # convert a "flat" index into 2-D indices
-    (i, j) = numpy.unravel_index(min_flat_index, (n, n))'''
+    for row in range(len(D) - 1):
+        del(D[row][j])
+        del(D[row][i])
+        if row < len(newR):
+            D[row].append(newR[row])
+    if i > j:
+        del(D[i])
+        del(D[j])
+    else:
+        del(D[j])
+        del(D[i])
+
+    D.append(newR)
+    return D
+
+def neighborJoining(D, n , names):
     if n == 2:
-        return (names[0], names[1])
+        return(names[0], names[1])
     M = numpy.zeros((n, n))
     rs = findR(D)
-    for row in range(n - 1):
+    for row in range(n):
         ra = rs[row]
         for col in range(n):
             if row < col:
                 rb = rs[col]
-                #print(M[row][col])
                 M[row][col] = (n - 2) * D[row][col] - ra - rb
     min_flat_index = numpy.argmin(M)
     i, j = numpy.unravel_index(min_flat_index, (n, n))
@@ -59,29 +72,41 @@ def neighborJoining(D, n , names):
     names.remove(nameA)
     names.remove(nameB)
 
+    newR = []
+
+    #find correct way to build the new row and update values in other rows
+    '''for col in range(n):
+        newR.append((D[i][col] + D[j][col] - D[i][j])/2)'''
     dij = D[i][j]
     newR = []
-    for col in range(len(D[0])):
-        if col != j and col != i:
-            newR.append((D[i][col] + D[j][col] - D[i][j])/2)
-    newR.append(0)
-    for row in range(len(D)):
-        del(D[row][j])
-        del(D[row][i])
-        if row < len(newR):
-            D[row].append(newR[row])
-    D[j] = newR
-    del(D[i])
+    for col in range(n):
+        newR.append((D[i][col] + D[j][col] - D[i][j])/2)
+    print(newR)
 
-    #index error
-    #T = (neighborJoining(D, n - 1, names), (nameA, nameB))
+    if i > j:
+        del(D[i])
+        del(newR[i])
+        for row in range(n - 1):
+            D[row][n - 1] = newR[row]
+        D[j] = newR
+    if j > i:
+        del(D[j])
+        del(newR[j])
+        for row in range(n - 1):
+            D[row][n - 1] = newR[row]
+        D[i] = newR
+
+
+    #ERROR IS OCCURING WITH ADDING
+    T = (neighborJoining(D, n - 1, names))
+    #return T
 
 
 def main():
     #alignments = dictBuilder()
     #D = (distanceMatrix(alignments))
     names = ['dog', 'bear', 'raccoon', 'weasel', 'seal', 'sea lion', 'cat', 'monkey']
-    exmpleMatrix = [[0, 32, 48, 51, 50, 48, 98, 148],
+    example1 = [[0, 32, 48, 51, 50, 48, 98, 148],
                     [32, 0, 26, 34, 29, 33, 84, 136],
                     [48, 26, 0, 42, 44, 44, 92, 152],
                     [51, 34, 42, 0, 44, 38, 86, 142],
@@ -89,7 +114,11 @@ def main():
                     [48, 33, 44, 38, 24, 0, 90, 142],
                     [98, 84, 92, 86, 89, 90, 0, 148],
                     [148, 136, 152, 142, 142, 142, 148, 0]]
-    neighborJoining(exmpleMatrix, 8, names)
+    example2 = [[0, 32, 48, 51, 50, 48, 49.0], [32, 0, 26, 34, 29, 33, 36.0], [48, 26, 0, 42, 44, 44, 48.0], [51, 34, 42, 0, 44, 38, 40.0], [50, 29, 44, 44, 0, 24, 41.5], [48, 33, 44, 38, 24, 0, 42.0], [49.0, 36.0, 48.0, 40.0, 41.5, 42.0, 0.0]]
+    D = (neighborJoining(example1, 8, names))
+    print("After: ")
+    for line in D:
+        print(line)
     return 0
 
 main()
