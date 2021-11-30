@@ -9,18 +9,21 @@ from compbio import *
 from Bio import Phylo
 from io import StringIO
 
-def dictBuilder():
+def dictBuilder(fileNames):
     alignments = {}
     currentDirect = os.getcwd()
-    fileNames = ['\England (DEC052020)\HCOV19-ENGLAND-051220-A.fasta', '\England (DEC082020)\HCOV19-ENGLAND-081220-A.fasta', '\England (NOV032020)\HCOV19-ENGLAND-031120-A.fasta', '\England (NOV102020)\HCOV19-ENGLAND-101120-A.fasta', '\England (NOV272020)\HCOV19-ENGLAND-271120-A.fasta']
     for name in fileNames:
         file = open(currentDirect + name, "r")
         file = file.readlines()
         header = file[0]
         key = ''
         for line in file[1:]:
-            key = key + line.strip('\n')
-        alignments[header] = key
+            if line[0] == '>':
+                alignments[header] = key
+                header = line
+                key = ''
+            else:
+                key = key + line.strip('\n')
     return(alignments)
 
 def findR(D):
@@ -109,13 +112,33 @@ def neighborJoining(D, n, names):
     #ERROR IS OCCURING WITH ADDING
     return(neighborJoining(D, n - 1, names))
 
+def buildD(filename):
+    currentDirect = os.getcwd()
+    file = open(currentDirect + filename, "r")
+    rows = []
+    names = []
+    D = []
+    for line in file:
+        rows.append(line.split())
+    for row in rows:
+        names.append(row[1][-25:-11])
+        temp = []
+        for item in row[2:]:
+            temp.append(100 - float(item))
+        D.append(temp)
+    return D, names
 
+
+def barChart(alignments):
+    return 0
 
 def main():
-    #alignments = dictBuilder()
+    fileNames = ['\England (DEC052020)\HCOV19-ENGLAND-051220-A.fasta', '\England (DEC082020)\HCOV19-ENGLAND-081220-A.fasta', '\England (NOV032020)\HCOV19-ENGLAND-031120-A.fasta', '\England (NOV102020)\HCOV19-ENGLAND-101120-A.fasta', '\England (NOV272020)\HCOV19-ENGLAND-271120-A.fasta']
+    fileNames2 = ['\England (DEC052020)\HCOV19-ENGLAND-051220-D.pim', '\England (DEC082020)\HCOV19-ENGLAND-081220-D.pim', '\England (NOV032020)\HCOV19-ENGLAND-031120-D.pim', '\England (NOV102020)\HCOV19-ENGLAND-101120-D.pim', '\England (NOV272020)\HCOV19-ENGLAND-271120-D.pim']
+    alignments = dictBuilder(fileNames)
     #D = (distanceMatrix(alignments))
 
-    #Example Distance Matrix
+    '''#Example Distance Matrix
     names = ['dog', 'bear', 'raccoon', 'weasel', 'seal', 'sea_lion', 'cat', 'monkey']
     example1 = [[0, 32, 48, 51, 50, 48, 98, 148],
                     [32, 0, 26, 34, 29, 33, 84, 136],
@@ -129,7 +152,16 @@ def main():
     T = str(T)
     print(T)
     T = Phylo.read(StringIO(T), 'newick')
-    Phylo.draw(T)
+    Phylo.draw(T)'''
+
+
+    #.pim files
+    for file in fileNames2:
+        D, names = buildD(file)
+        T = (neighborJoining(D, len(D), names))
+        T = Phylo.read(StringIO(T), 'newick')
+        Phylo.draw(T)
+
 
     return 0
 
