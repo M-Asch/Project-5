@@ -6,6 +6,8 @@
 import os
 import numpy
 from compbio import *
+from Bio import Phylo
+from io import StringIO
 
 def dictBuilder():
     alignments = {}
@@ -78,7 +80,7 @@ def updateD(D, i, j):
 
 def neighborJoining(D, n, names):
     if n == 2:
-        return(names)
+        return("(" + str(names[0]) + ", " + str(names[1]) + ":" + str(D[0][1]) + ")")
     M = numpy.zeros((n, n))
     rs = findR(D)
     for row in range(n):
@@ -96,15 +98,7 @@ def neighborJoining(D, n, names):
 
     #update names array
     nameA, nameB = names[i], names[j]
-    if type(nameA) != tuple:
-        nA = nameA + ":" + str(lengthA)
-    else:
-        nA = nameA
-    if type(nameB) != tuple:
-        nB = nameB + ":" + str(lengthB)
-    else:
-        nB = nameB
-    names.append((nA, nB))
+    names.append("(" + str(nameA) + ":" + str(lengthA) + ", "  + str(nameB) + ":" + str(lengthB) + ")")
     names.remove(nameA)
     names.remove(nameB)
 
@@ -120,7 +114,9 @@ def neighborJoining(D, n, names):
 def main():
     #alignments = dictBuilder()
     #D = (distanceMatrix(alignments))
-    names = ['dog', 'bear', 'raccoon', 'weasel', 'seal', 'sea lion', 'cat', 'monkey']
+
+    #Example Distance Matrix
+    names = ['dog', 'bear', 'raccoon', 'weasel', 'seal', 'sea_lion', 'cat', 'monkey']
     example1 = [[0, 32, 48, 51, 50, 48, 98, 148],
                     [32, 0, 26, 34, 29, 33, 84, 136],
                     [48, 26, 0, 42, 44, 44, 92, 152],
@@ -129,10 +125,12 @@ def main():
                     [48, 33, 44, 38, 24, 0, 90, 142],
                     [98, 84, 92, 86, 89, 90, 0, 148],
                     [148, 136, 152, 142, 142, 142, 148, 0]]
-    example2 = [[0, 32, 48, 51, 50, 48, 49.0], [32, 0, 26, 34, 29, 33, 36.0], [48, 26, 0, 42, 44, 44, 48.0], [51, 34, 42, 0, 44, 38, 40.0], [50, 29, 44, 44, 0, 24, 41.5], [48, 33, 44, 38, 24, 0, 42.0], [49.0, 36.0, 48.0, 40.0, 41.5, 42.0, 0.0]]
     T = (neighborJoining(example1, 8, names))
-    print("After: ")
+    T = str(T)
     print(T)
+    T = Phylo.read(StringIO(T), 'newick')
+    Phylo.draw(T)
+
     return 0
 
 main()
