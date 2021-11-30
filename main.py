@@ -48,30 +48,7 @@ def distanceMatrix(D, i, j):
     D.append(newR)
     return D
 
-def neighborJoining(D, n , names):
-    if n == 2:
-        return(names[0], names[1])
-    M = numpy.zeros((n, n))
-    rs = findR(D)
-    for row in range(n):
-        ra = rs[row]
-        for col in range(n):
-            if row < col:
-                rb = rs[col]
-                M[row][col] = (n - 2) * D[row][col] - ra - rb
-    min_flat_index = numpy.argmin(M)
-    i, j = numpy.unravel_index(min_flat_index, (n, n))
-
-    #establish lengths
-    lengthA = D[i][j]/2 - ((rs[i] - rs[j])/(2*(n - 2)))
-    lengthB = D[i][j]/2 - ((rs[j] - rs[i])/(2*(n - 2)))
-
-    #update names array
-    nameA, nameB = names[i], names[j]
-    names.append((nameA, nameB))
-    names.remove(nameA)
-    names.remove(nameB)
-
+def updateD(D, i, j):
     dij = D[i][j]
 
     newr = []
@@ -96,10 +73,48 @@ def neighborJoining(D, n , names):
     newr.append(0)
     D.append(newr)
 
+    return D
+
+
+def neighborJoining(D, n, names):
+    if n == 2:
+        return(names)
+    M = numpy.zeros((n, n))
+    rs = findR(D)
+    for row in range(n):
+        ra = rs[row]
+        for col in range(n):
+            if row < col:
+                rb = rs[col]
+                M[row][col] = (n - 2) * D[row][col] - ra - rb
+    min_flat_index = numpy.argmin(M)
+    i, j = numpy.unravel_index(min_flat_index, (n, n))
+
+    #establish lengths
+    lengthB = D[i][j]/2 - ((rs[i] - rs[j])/(2*(n - 2)))
+    lengthA = D[i][j]/2 - ((rs[j] - rs[i])/(2*(n - 2)))
+
+    #update names array
+    nameA, nameB = names[i], names[j]
+    if type(nameA) != tuple:
+        nA = nameA + ":" + str(lengthA)
+    else:
+        nA = nameA
+    if type(nameB) != tuple:
+        nB = nameB + ":" + str(lengthB)
+    else:
+        nB = nameB
+    names.append((nA, nB))
+    names.remove(nameA)
+    names.remove(nameB)
+
+
+    D = updateD(D, i, j)
+
 
     #ERROR IS OCCURING WITH ADDING
-    T = (neighborJoining(D, n - 1, names))
-    return names
+    return(neighborJoining(D, n - 1, names))
+
 
 
 def main():
@@ -115,10 +130,9 @@ def main():
                     [98, 84, 92, 86, 89, 90, 0, 148],
                     [148, 136, 152, 142, 142, 142, 148, 0]]
     example2 = [[0, 32, 48, 51, 50, 48, 49.0], [32, 0, 26, 34, 29, 33, 36.0], [48, 26, 0, 42, 44, 44, 48.0], [51, 34, 42, 0, 44, 38, 40.0], [50, 29, 44, 44, 0, 24, 41.5], [48, 33, 44, 38, 24, 0, 42.0], [49.0, 36.0, 48.0, 40.0, 41.5, 42.0, 0.0]]
-    D = (neighborJoining(example1, 8, names))
+    T = (neighborJoining(example1, 8, names))
     print("After: ")
-    for line in D:
-        print(line)
+    print(T)
     return 0
 
 main()
