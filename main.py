@@ -72,34 +72,34 @@ def neighborJoining(D, n , names):
     names.remove(nameA)
     names.remove(nameB)
 
-    newR = []
-
-    #find correct way to build the new row and update values in other rows
-    '''for col in range(n):
-        newR.append((D[i][col] + D[j][col] - D[i][j])/2)'''
     dij = D[i][j]
-    newR = []
-    for col in range(n):
-        newR.append((D[i][col] + D[j][col] - D[i][j])/2)
-    print(newR)
 
+    newr = []
     if i > j:
         del(D[i])
-        del(newR[i])
-        for row in range(n - 1):
-            D[row][n - 1] = newR[row]
-        D[j] = newR
-    if j > i:
         del(D[j])
-        del(newR[j])
-        for row in range(n - 1):
-            D[row][n - 1] = newR[row]
-        D[i] = newR
+        for row in range(len(D)):
+            value = ((D[row][i] + D[row][j] -dij)/2)
+            D[row].append(value)
+            del(D[row][i])
+            del(D[row][j])
+            newr.append(value)
+    else:
+        del(D[j])
+        del(D[i])
+        for row in range(len(D)):
+            value = ((D[row][i] + D[row][j] -dij)/2)
+            D[row].append(value)
+            del(D[row][j])
+            del(D[row][i])
+            newr.append(value)
+    newr.append(0)
+    D.append(newr)
 
 
     #ERROR IS OCCURING WITH ADDING
     T = (neighborJoining(D, n - 1, names))
-    #return T
+    return names
 
 
 def main():
