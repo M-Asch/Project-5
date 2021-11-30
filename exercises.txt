@@ -19,7 +19,13 @@ Exercise 6: The original nucleotide at this position is C. 99 of the 100 Novembe
 
 Exercise 7: 
 
-Exercise 8: 
+Exercise 8: Interesting features resulting from the December 8 heat map can be seen in the bottom
+  right corner of heat map with the many crosses and the large lines along the bottom and right sides
+  of the map that approach the corner. These most likely represent differences within the different genome
+  sequences. This differs from earlier heat maps as previous heat maps tended to express differences in the
+  early parts of the sequence, as seen through the darker areas in the top right of these maps. From this, 
+  we can conclude that different areas of the genome would begin to see mutations the longer COVID was spreading
+  within England. 
 
 Command Example: python heatmap.py "England (NOV032020)/HCOV19-ENGLAND-031120-D.pim"
 
