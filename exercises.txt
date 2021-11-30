@@ -17,8 +17,10 @@ Exercise 6: The original nucleotide at this position is C. 99 of the 100 Novembe
   the original C nucelotide. The mutation turned the C nucleotide to an A. 44 of the genomes from December 8
    picked up the mutation. 
 
-Exercise 7:
+Exercise 7: 
 
-Exercise 8:
+Exercise 8: 
+
+Command Example: python heatmap.py "England (NOV032020)/HCOV19-ENGLAND-031120-D.pim"
 
 Exercise 9: 
