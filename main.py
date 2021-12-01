@@ -86,9 +86,7 @@ def neighborJoining(D, n, names):
     names.remove(nameA)
     names.remove(nameB)
 
-
     D = updateD(D, i, j)
-
 
     #ERROR IS OCCURING WITH ADDING
     return(neighborJoining(D, n - 1, names))
