@@ -8,6 +8,7 @@ import numpy
 from compbio import *
 from Bio import Phylo
 from io import StringIO
+import matplotlib.pyplot as plt
 
 def dictBuilder(fileNames):
     alignments = {}
@@ -24,6 +25,7 @@ def dictBuilder(fileNames):
                 key = ''
             else:
                 key = key + line.strip('\n')
+        alignments[header] = key
     return(alignments)
 
 def findR(D):
@@ -31,27 +33,6 @@ def findR(D):
     for row in D:
         rs.append(sum(row))
     return rs
-
-def distanceMatrix(D, i, j):
-    dij = D[i][j]
-    newR = []
-    for col in range(len(D[0]) - 1):
-        newR.append((D[i][col] + D[j][col] - dij/2))
-
-    for row in range(len(D) - 1):
-        del(D[row][j])
-        del(D[row][i])
-        if row < len(newR):
-            D[row].append(newR[row])
-    if i > j:
-        del(D[i])
-        del(D[j])
-    else:
-        del(D[j])
-        del(D[i])
-
-    D.append(newR)
-    return D
 
 def updateD(D, i, j):
     dij = D[i][j]
@@ -129,16 +110,37 @@ def buildD(filename):
     return D, names
 
 
-def barChart(alignments):
-    return 0
+def barChart(fileNames):
+    alignments = []
+    height = [0, 0, 0, 0 ,0]
+    alignments.append(dictBuilder(fileNames[1:2]))
+    alignments.append(dictBuilder(fileNames[2:3]))
+    for name in range(len(fileNames)):
+        fileNames[name] = fileNames[name][10:19]
+        bars = tuple(fileNames)
+
+    for align in range(len(alignments)):
+        for a in alignments[align]:
+            if alignments[align][a][21764:21770] == '------':
+                if alignments[align][a][23062] == 'T':
+                    if alignments[align][a][23603] == 'A':
+                        height[align + 1] += 1
+
+    y_pos = numpy.arange(len(bars))
+    plt.bar(y_pos, height)
+    plt.xticks(y_pos, bars)
+    plt.show()
+
 
 def main():
     fileNames = ['\England (DEC052020)\HCOV19-ENGLAND-051220-A.fasta', '\England (DEC082020)\HCOV19-ENGLAND-081220-A.fasta', '\England (NOV032020)\HCOV19-ENGLAND-031120-A.fasta', '\England (NOV102020)\HCOV19-ENGLAND-101120-A.fasta', '\England (NOV272020)\HCOV19-ENGLAND-271120-A.fasta']
     fileNames2 = ['\England (DEC052020)\HCOV19-ENGLAND-051220-D.pim', '\England (DEC082020)\HCOV19-ENGLAND-081220-D.pim', '\England (NOV032020)\HCOV19-ENGLAND-031120-D.pim', '\England (NOV102020)\HCOV19-ENGLAND-101120-D.pim', '\England (NOV272020)\HCOV19-ENGLAND-271120-D.pim']
     alignments = dictBuilder(fileNames)
+    barChart(fileNames)
     #D = (distanceMatrix(alignments))
 
-    '''#Example Distance Matrix
+    '''
+    #Example Distance Matrix
     names = ['dog', 'bear', 'raccoon', 'weasel', 'seal', 'sea_lion', 'cat', 'monkey']
     example1 = [[0, 32, 48, 51, 50, 48, 98, 148],
                     [32, 0, 26, 34, 29, 33, 84, 136],
@@ -152,15 +154,17 @@ def main():
     T = str(T)
     print(T)
     T = Phylo.read(StringIO(T), 'newick')
-    Phylo.draw(T)'''
+    Phylo.draw(T)
+    '''
 
-
+    '''
     #.pim files
     for file in fileNames2:
         D, names = buildD(file)
         T = (neighborJoining(D, len(D), names))
         T = Phylo.read(StringIO(T), 'newick')
         Phylo.draw(T)
+    '''
 
 
     return 0

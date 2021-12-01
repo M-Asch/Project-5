@@ -22,7 +22,7 @@ N501-Y 23063
 DELETION 21765-21770
 P681-H: 23604
 
-The mutation was from an A to a T. 394 of the DEC 8 genome had the mutation and 394 from the NOV 8 also had it.
+The mutation was from an C to an A. 44 of the DEC 8 genome had the mutation and 1 from the NOV 8 also had it.
 
 Exercise 8: Interesting features resulting from the December 8 heat map can be seen in the bottom
   right corner of heat map with the many crosses and the large lines along the bottom and right sides
