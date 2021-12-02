@@ -1,7 +1,7 @@
 #================================
 # Mitchell Aschmeyer and Riley Collins
-#
-#
+# 12/1/2021
+# Read in multiple fasta files and perform a neighrbor joining algorithm
 #================================
 import os
 import numpy
@@ -179,7 +179,6 @@ def main():
     fileNames2 = ['\England (DEC052020)\HCOV19-ENGLAND-051220-D.pim', '\England (DEC082020)\HCOV19-ENGLAND-081220-D.pim', '\England (NOV032020)\HCOV19-ENGLAND-031120-D.pim', '\England (NOV102020)\HCOV19-ENGLAND-101120-D.pim', '\England (NOV272020)\HCOV19-ENGLAND-271120-D.pim']
     fileNames3 = ['\England (DEC052020)\HCOV19-ENGLAND-051220.fasta', '\England (DEC082020)\HCOV19-ENGLAND-081220.fasta', '\England (NOV032020)\HCOV19-ENGLAND-031120.fasta', '\England (NOV102020)\HCOV19-ENGLAND-101120.fasta', '\England (NOV272020)\HCOV19-ENGLAND-271120.fasta']
     barChart(fileNames3)
-    #D = (distanceMatrix(alignments))
 
     #Example Distance Matrix
     '''names = ['dog', 'bear', 'raccoon', 'weasel', 'seal', 'sea_lion', 'cat', 'monkey']
@@ -198,14 +197,14 @@ def main():
     Phylo.draw(T)
     '''
 
-    '''
+
     #.pim files
     for file in fileNames2:
         D, names = buildD(file)
         T = (neighborJoining(D, len(D), names))
         T = Phylo.read(StringIO(T), 'newick')
         Phylo.draw(T)
-    '''
+
 
 
     return 0
