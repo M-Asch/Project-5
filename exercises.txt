@@ -18,9 +18,9 @@ Exercise 6: The original nucleotide at this position is C. 99 of the 100 Novembe
    picked up the mutation.
 
 Exercise 7:
-N501-Y 23063
-DELETION 21765-21770
-P681-H: 23604
+N501-Y 23063 [NOV3, DEC 8, DNOV 27 23063]    [DEC 5, NOV 10 23064 (23065)]
+DELETION [NOV3, DEC 8 21765-21770], [NOV27 = 21763 (21764)] [NOV10, DEC 05 21769 (21770)],
+P681-H: 23604 [NOV3, DEC 8, DNOV 27 23604] [DEC 5, NOV 10 23062 (23063)]
 
 The mutation was from an C to an A. 44 of the DEC 8 genome had the mutation and 1 from the NOV 8 also had it.
 
